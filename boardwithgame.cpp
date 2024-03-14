@@ -32,27 +32,14 @@ boardWithgame::boardWithgame(QWidget *parent) :
     ui->liveScore->setText(QString::number(0));//обнуление очков
     ui->label->setStyleSheet("background-color: rgba(100,50,60,200); border: 4mm ridge rgba(211, 220, 50, .6); ");
     ui->checkBox->setStyleSheet ("background-color: rgba(100,50,60,200); border: 4mm ridge rgba(211, 220, 50, .6); ");
-    //qleadd();//добавление плашек в список
-    //stepBackAdd();//добавление плашек в список, для восстановления значений на шаг назад
-    //qle_list.at(randPlateIndexGenerator(generator))->setText("2");
-    //qle_list.at(randPlateIndexGenerator(generator))->setText("2");
+
     setFrame ();
     qleadd();
     spawnPlate (0);
-
-//    spawnPlate(randPlateIndexGenerator(generator));
-//    spawnPlate(1);
 //    spawnPlate(2);
-//    spawnPlate(0);
-//    spawnAllPlates();
+
 
     ui->gridLayoutWidget->setGeometry(QRect(298,365,400,400));
-//    QLineEdit *plate = new QLineEdit;
-//    plate->setText("2");
-//    plate->setGeometry(0,0,100,100);
-//    ui->gridLayout->addWidget(plate);
-
-//    ui->gridLayout->itemAt(0)->setGeometry(QRect(0,0,100,100));
 }
 
 void boardWithgame::plateMoveAnimation(QLineEdit *lineedit)
@@ -84,43 +71,25 @@ void boardWithgame::setFrame()
     for(int i = 0; i < 4; ++i){
         for(int j = 0; j < 4; ++j){
             QFrame *frame = new QFrame;
-            qf_list.append(frame);
-            frame->setGeometry (QRect(0,0,100,100));
-            frame->setStyleSheet ("background-color: rgba(100,50,60,200); border: 4mm ridge rgba(211, 220, 50, .6); ");
+            frame->setGeometry(QRect(0,0,100,100));
+            frame->setStyleSheet("background-color: rgba(100,50,60,200); border: 4mm ridge rgba(211, 220, 50, .6); ");
             ui->gridLayout->addWidget(frame, i, j, 1,1);
-            ui->gridLayout->setRowMinimumHeight (i,100);
-            ui->gridLayout->setColumnMinimumWidth(j,100);
         }
+        ui->gridLayout->setRowMinimumHeight(i,100);
+        ui->gridLayout->setColumnMinimumWidth(i,100);
     }
 }
 
 void boardWithgame::spawnPlate(int k)
 {
-
     int text = 0;
     if(randPlateIndexGenerator(generator) < 8){ text = 2; } else { text = 4; }
-
-//    if(qle_list[k] != nullptr){
-//        while(qle_list[k] != nullptr){
-//            k = randPlateIndexGenerator(generator);
-//        }
-//    }
-    QLineEdit *plate = new QLineEdit; // itematposition возвращает layoutitem...
-    plate->setText(QString::number(text));
-    plate->setReadOnly(1);
-    plate->setStyleSheet("background-color: rgba(0,100,100,170);border-radius: 20px; font-size: 41px;");
-    //qle_list[k] = new QLineEdit;
-    qle_list[k] = plate;
-
+    qle_list[k] = new QLineEdit;
+    qle_list.at(k)->setText(QString::number(text));
+    qle_list.at(k)->setReadOnly(true);
+    qle_list.at(k)->setStyleSheet("background-color: rgba(0,100,100,170);border-radius: 20px; font-size: 41px;");
 
     int row, column = 0; //column - столбец, row - ряд
-//    switch (k + 1 % 4) {
-//    case 1:
-//        row = k + 1)
-//        break;
-//    default:
-//        break;
-//    }
     if((k + 1) % 4 == 0){
         row = ((k + 1) / 4) - 1;
         column = 3;
@@ -143,9 +112,12 @@ void boardWithgame::spawnPlate(int k)
         if((k + 1) / 4 == 2) { row = 2; } else
         if((k + 1) / 4 == 3) { row = 3; }
     }
-
-    //qf_list[1]->set
-    ui->gridLayout->addWidget(qle_list.at(k), row, column, Qt::AlignCenter);
+    if(ui->gridLayout->itemAtPosition(row,column)){
+//        ui->gridLayout->removeItem(ui->gridLayout->takeAt(k));
+//        qle_list.takeAt(k);
+        ui->gridLayout->takeAt(k);
+    }
+    ui->gridLayout->addWidget(qle_list.at(k), row,column);
     spawnCounter++;
 }
 
@@ -197,7 +169,6 @@ void boardWithgame::gameEnd()
         for(int i = 0; i < 16; i++){
             stepBack_list[i] = reserveStepBack_list[i];
         }
-
         QMessageBox *mes = new QMessageBox;
         mes->setText("You lost! Restart da game! Or try the other side ;)");
         mes->exec();
@@ -269,19 +240,12 @@ void boardWithgame::moveWithoutAddition(int k, int j)
 {
     k = k - 1; j = j - 1;
     qle_list[k] = new QLineEdit;
-    //qle_list.at(k)->setText(qle_list.at(j)->text());
-    QLineEdit* bufj = new QLineEdit;
-    QLineEdit* bufk = new QLineEdit;
-    bufk->text() = qle_list.at(k)->text();
-    bufj->text() = qle_list.at(j)->text();
-    //qle_list.at(k) = buf;//qle_list.at(j);
-    bufk->text()=bufj->text();
-    qle_list.at(k)->setText(bufk->text());
+    QString temp = qle_list.at(j)->text();
+    qle_list.at(k)->setText(temp);
     qle_list[j] = nullptr;
     winCheck();
     rearrangmentCounter++;
     plateMoveAnimation(qle_list.at(k));
-    delete bufk, bufj;
 }
 
 void boardWithgame::moveLeft(int k) // 1 строка

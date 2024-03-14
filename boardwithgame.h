@@ -68,7 +68,6 @@ private:
     const QString name = "highscore.txt";  //название файла с максимальным счётом
     std::ofstream fout;    //поток вывода
     QPropertyAnimation *animation;
-    QList <QFrame*> qf_list;
 
 };
 
