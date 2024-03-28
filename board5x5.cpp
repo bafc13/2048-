@@ -30,7 +30,6 @@ board5x5::board5x5(QWidget *parent) :
     qle_list.at(randIndexGenerator(Generator))->setText("2");
     qle_list.at(randIndexGenerator(Generator))->setText("2");
     setStyleSheet();
-
 }
 
 void board5x5::setStyleSheet()
