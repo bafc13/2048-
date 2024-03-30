@@ -40,13 +40,13 @@ public:
     void gameEnd();
     void stepBackAdd();
     void stepBackBack();
-    void moveLeft(int k);
+    void moveLeft();
     void moveRight(int k);
     void moveDown(int k);
     void moveUp(int k);
     int speedMode_toogle = 0;
-    void setStyleSheet();
     void setcolor();
+    void tryMove(int k, int j);
 
 
 private slots:

@@ -9,7 +9,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //נאםהמל ג סעמכבצו, ןונוהא¸ל םמל
 
 
 
-        if(e->key() == Qt::Key_Backspace){
+        if(e->key() == Qt::Key_Escape){
             close();
         }
 
@@ -22,10 +22,10 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //נאםהמל ג סעמכבצו, ןונוהא¸ל םמל
             //ÑÌÅÙÅÍÈ‗
             //ÂËÅÂÎ
 
-            moveLeft(1);
-            moveLeft(2);
-            moveLeft(3);
-            moveLeft(4);
+            moveLeft();
+//            moveLeft(2);
+//            moveLeft(3);
+//            moveLeft(4);
 
             //ÁËÎÊ
             //ÎÊÎÍ×ÀÍÈ‗

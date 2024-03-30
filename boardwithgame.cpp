@@ -38,20 +38,22 @@ boardWithgame::boardWithgame(QWidget *parent) :
     }
     setFrame ();
     qleadd();
-    spawnPlate(0);
+    spawnPlate(2);
     spawnPlate(1);
+    spawnPlate(6);
     ui->gridLayoutWidget->setGeometry(QRect(298,365,400,400));
 }
 
 void boardWithgame::plateMoveAnimation(QLineEdit *lineedit)
 {
     if(speedMode_toogle == 0){
-    animation = new QPropertyAnimation(lineedit, "geometry");
-    animation->setDuration(80);
-    animation->setStartValue(lineedit->geometry());
-    animation->setKeyValueAt(0.5,QRect(lineedit->x()-50, lineedit->y()-50,lineedit->width()-25,lineedit->height()-25));
-    animation->setEndValue(lineedit->geometry());
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
+//    animation = new QPropertyAnimation(lineedit, "geometry");
+//    animation->setDuration(50);
+//    QRect old_Geometry = lineedit->geometry();
+//    animation->setStartValue(old_Geometry);
+//    animation->setKeyValueAt(0.5,QRect(lineedit->x()+100, lineedit->y(),lineedit->width()+10,lineedit->height()));
+//    animation->setEndValue(old_Geometry);
+//    animation->start(QAbstractAnimation::KeepWhenStopped);
     }
 }
 
@@ -74,8 +76,8 @@ void boardWithgame::setFrame()
             QFrame *frame = new QFrame;
             frame->setGeometry(QRect(270 +(102*i),370+(102*j),100,100));
             frame->setStyleSheet("background-color: rgba(100,50,60,200); border: 4mm ridge rgba(211, 220, 50, .6);");
-            frame->setGeometry((270 +(102*i)), (370 + (102*j)), 100,100);
-            ui->gridLayout->addWidget(frame, i, j, 1,1);
+            frame->setGeometry((270 +(100*i)), (370 + (100*j)), 100,100);
+            ui->gridLayout->addWidget(frame, i, j, 1, 1);
     }}}
 
 void boardWithgame::on_exitButton_clicked()
@@ -173,135 +175,83 @@ void boardWithgame::spawnAllPlates()
 void boardWithgame::spawnPlate(int k)
 {
     int text = 2;
-//    if(randPlateIndexGenerator(generator) < 8){ text = 2; } else { text = 4; }
+    if(randPlateIndexGenerator(generator) < 8){ text = 2; } else { text = 4; }
     qle_list[k] = new QLineEdit;
     qle_list.at(k)->setText(QString::number(text));
     qle_list.at(k)->setReadOnly(true);
+    qle_list.at(k)->setAlignment(Qt::AlignCenter);
     qle_list.at(k)->setStyleSheet("background-color: rgba(0,100,100,170);border-radius: 20px; font-size: 41px;");
-    qle_list.at(k)->resize(100,45);
-
-
     int row, column = 0; //column - столбец, row - ряд
-    if((k + 1) % 4 == 0){
-        row = ((k + 1) / 4) - 1;
-        column = 3;
-    } else if((k + 1) % 4 == 1){
-        column = 0;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    } else if((k + 1) % 4 == 2){
-        column = 1;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    } else if((k + 1) % 4 == 3){
-        column = 2;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    }
+    row = k / 4;
+    column = k % 4;
     ui->gridLayout->addWidget(qle_list.at(k), row, column, 1, 1, 0);
     spawnCounter++;}
 
 void boardWithgame::moveWithAddition(int k, int j)
 {
-    k = k - 1; j = j - 1;
+//    k = k - 1; j = j - 1;
     score += qle_list.at(k)->text().toInt() * 2;
     qle_list.at(k)->setText(QString::number(qle_list.at(k)->text().toInt() + qle_list.at(j)->text().toInt()));
     qle_list.at(k)->setReadOnly(true);
+    qle_list.at(k)->setAlignment(Qt::AlignCenter);
     qle_list.at(k)->setStyleSheet("background-color: rgba(0,100,100,170);border-radius: 20px; font-size: 41px;");
-    qle_list.at(k)->resize(100,45);
-//    spawnPlate(k);
     int row, column = 0; //column - столбец, row - ряд
-    if((k + 1) % 4 == 0){
-        row = ((k + 1) / 4) - 1;
-        column = 3;
-    } else if((k + 1) % 4 == 1){
-        column = 0;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    } else if((k + 1) % 4 == 2){
-        column = 1;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    } else if((k + 1) % 4 == 3){
-        column = 2;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    }
-//    if(k > -1 && k < 16){
+    row = k / 4;
+    column = k % 4;
     ui->gridLayout->takeAt(k);
-    ui->gridLayout->addWidget(qle_list.at(k), row,column, 1, 1, 0/*,1,1, Qt::AlignCenter*/);
-//    if(qle_list[j] != nullptr){
+    ui->gridLayout->addWidget(qle_list.at(k), row,column);
     qle_list[j]->hide();
+    qle_list.at(j)->setText("");
     qle_list[j] = nullptr;
-//    ui->gridLayout->removeWidget(qle_list.at(j));
-//    }
-//    qle_list.at(j)->setText("");
-
     winCheck();
     rearrangmentCounter++;
     plateMoveAnimation(qle_list.at(k));}
 
 void boardWithgame::moveWithoutAddition(int k, int j)
 {
-    k = k - 1; j = j - 1;
+//    k = k - 1; j = j - 1;
     qle_list[k] = new QLineEdit;
     QString temp = qle_list.at(j)->text();
     qle_list.at(k)->setReadOnly(true);
+    qle_list.at(k)->setAlignment(Qt::AlignCenter);
     qle_list.at(k)->setStyleSheet("background-color: rgba(0,100,100,170);border-radius: 20px; font-size: 41px;");
     qle_list.at(k)->setText(temp);
-    qle_list.at(k)->resize(100,45);
     int row, column = 0; //column - столбец, row - ряд
-    if((k + 1) % 4 == 0){
-        row = ((k + 1) / 4) - 1;
-        column = 3;
-    } else if((k + 1) % 4 == 1){
-        column = 0;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    } else if((k + 1) % 4 == 2){
-        column = 1;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    } else if((k + 1) % 4 == 3){
-        column = 2;
-        if((k + 1) / 4 == 0) { row = 0; } else
-        if((k + 1) / 4 == 1) { row = 1; } else
-        if((k + 1) / 4 == 2) { row = 2; } else
-        if((k + 1) / 4 == 3) { row = 3; }
-    }
-//    if(k > -1 && k < 16){
-    ui->gridLayout->addWidget(qle_list.at(k), row,column, 1, 1, 0/*,1,1, Qt::AlignCenter*/);
-//    spawnPlate(k);
-//    if(qle_list[j] != nullptr){
+    row = k / 4;
+    column = k % 4;
+    ui->gridLayout->addWidget(qle_list.at(k), row,column);
     qle_list[j]->hide();
+    qle_list.at(j)->setText("");
     qle_list[j] = nullptr;
-//    ui->gridLayout->removeWidget(qle_list.at(j));
-//    }
-//    qle_list.at(j)->setText("");
-
     winCheck();
     rearrangmentCounter++;
     plateMoveAnimation(qle_list.at(k));}
 
-void boardWithgame::moveLeft(int k)
+
+void boardWithgame::tryMove(int k, int j)
 {
-    if(k == 2){
+//    k-=1; j-=1;
+    if(qle_list[j] != nullptr && qle_list[k] == nullptr){
+        moveWithoutAddition(k, j);
+    } else if (qle_list[k] != nullptr && qle_list[j] != nullptr &&
+               qle_list.at(k)->text() == qle_list.at(j)->text()){
+        moveWithAddition(k,j);
+    }
+}
+
+void boardWithgame::moveLeft()
+{
+
+    for(int i = 1; i < 14; i += 4){
+        for(int j = 3; j > 0; --j){
+            for(int k = 0; k < j; ++k){
+               tryMove(i + k - 1, i + k);
+            }
+        }
+    }
+
+
+   /* if(k == 2){
         k = 5;
     } else if(k == 3){
         k = 9;
@@ -342,7 +292,7 @@ void boardWithgame::moveLeft(int k)
         if(qle_list[k + 1] == nullptr){
               moveWithoutAddition(k + 2, k + 3);}
         else if(qle_list.at(k + 1)->text() == qle_list.at(k + 2)->text()){
-             moveWithAddition(k + 2, k + 3);}}}
+             moveWithAddition(k + 2, k + 3);}}*/}
 
 void boardWithgame::moveRight(int k)
 {
@@ -465,13 +415,6 @@ void boardWithgame::moveUp(int k)
         else if(qle_list.at(k + 7)->text() == qle_list.at(k + 11)->text()){
             moveWithAddition(k + 8, k + 12);}}}
 
-void boardWithgame::setStyleSheet()
-{
-//    for(int i = 0; i < 16; i++){
-//        qle_list.at(i)->setStyleSheet("border-radius: 20px; opacity: 0.5; font-size: 41px;");
-//    }
-}
-
 void boardWithgame::setcolor()
 {
 /*    QPalette palette;
@@ -498,6 +441,8 @@ void boardWithgame::setcolor()
             palette.setColor(QPalette::Base, color);
             qle_list.at(i)->setPalette(palette);
         }*/}
+
+
 //        if(qle_list.at(i)->text() == "16"){
 //            palette.setColor(QPalette::Base, QColor::setRgb(162, 50, 168));
 //            qle_list.at(i)->setPalette(palete);

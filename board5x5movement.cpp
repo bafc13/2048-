@@ -8,7 +8,7 @@ void board5x5::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём номер ст
         stepBackAdd(); //заполнение массива для отката на ход назад
 
 
-        if(e->key() == Qt::Key_Backspace){
+        if(e->key() == Qt::Key_Escape){
             close();
         }
 
