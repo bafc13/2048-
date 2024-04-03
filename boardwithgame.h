@@ -41,9 +41,9 @@ public:
     void stepBackAdd();
     void stepBackBack();
     void moveLeft();
-    void moveRight(int k);
-    void moveDown(int k);
-    void moveUp(int k);
+    void moveRight();
+    void moveDown();
+    void moveUp();
     int speedMode_toogle = 0;
     void setcolor();
     void tryMove(int k, int j);

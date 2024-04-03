@@ -23,9 +23,6 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //נאםהמל ג סעמכבצו, ןונוהא¸ל םמל
             //ÂËÅÂÎ
 
             moveLeft();
-//            moveLeft(2);
-//            moveLeft(3);
-//            moveLeft(4);
 
             //ÁËÎÊ
             //ÎÊÎÍ×ÀÍÈ‗
@@ -53,10 +50,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //נאםהמל ג סעמכבצו, ןונוהא¸ל םמל
             //ÑÌÅÙÅÍÈ‗
             //ÂÏÐÀÂÎ
 
-            moveRight(1);
-            moveRight(2);
-            moveRight(3);
-            moveRight(4);
+            moveRight();
 
             //ÁËÎÊ
             //ÎÊÎÍ×ÀÍÈ‗
@@ -84,10 +78,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //נאםהמל ג סעמכבצו, ןונוהא¸ל םמל
             //ÑÌÅÙÅÍÈ‗
             //ÂÍÈÇ
 
-            moveDown(1);
-            moveDown(2);
-            moveDown(3);
-            moveDown(4);
+            moveDown();
 
             //ÁËÎÊ
             //ÎÊÎÍ×ÀÍÈ‗
@@ -115,10 +106,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //נאםהמל ג סעמכבצו, ןונוהא¸ל םמל
             //ÑÌÅÙÅÍÈ‗
             //ÂÂÅÐÕ
 
-            moveUp(1);
-            moveUp(2);
-            moveUp(3);
-            moveUp(4);
+            moveUp();
 
             //ÁËÎÊ
             //ÎÊÎÍ×ÀÍÈ‗

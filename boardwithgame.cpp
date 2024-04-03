@@ -40,20 +40,19 @@ boardWithgame::boardWithgame(QWidget *parent) :
     qleadd();
     spawnPlate(2);
     spawnPlate(1);
-    spawnPlate(6);
     ui->gridLayoutWidget->setGeometry(QRect(298,365,400,400));
 }
 
 void boardWithgame::plateMoveAnimation(QLineEdit *lineedit)
 {
     if(speedMode_toogle == 0){
-//    animation = new QPropertyAnimation(lineedit, "geometry");
-//    animation->setDuration(50);
-//    QRect old_Geometry = lineedit->geometry();
-//    animation->setStartValue(old_Geometry);
-//    animation->setKeyValueAt(0.5,QRect(lineedit->x()+100, lineedit->y(),lineedit->width()+10,lineedit->height()));
-//    animation->setEndValue(old_Geometry);
-//    animation->start(QAbstractAnimation::KeepWhenStopped);
+    animation = new QPropertyAnimation(lineedit, "geometry");
+    animation->setDuration(50);
+    QRect old_Geometry = lineedit->geometry();
+    animation->setStartValue(old_Geometry);
+    animation->setKeyValueAt(0.5,QRect(lineedit->x()+100, lineedit->y(),lineedit->width()+10,lineedit->height()));
+    animation->setEndValue(old_Geometry);
+    animation->start(QAbstractAnimation::KeepWhenStopped);
     }
 }
 
@@ -230,7 +229,6 @@ void boardWithgame::moveWithoutAddition(int k, int j)
 
 void boardWithgame::tryMove(int k, int j)
 {
-//    k-=1; j-=1;
     if(qle_list[j] != nullptr && qle_list[k] == nullptr){
         moveWithoutAddition(k, j);
     } else if (qle_list[k] != nullptr && qle_list[j] != nullptr &&
@@ -294,8 +292,25 @@ void boardWithgame::moveLeft()
         else if(qle_list.at(k + 1)->text() == qle_list.at(k + 2)->text()){
              moveWithAddition(k + 2, k + 3);}}*/}
 
-void boardWithgame::moveRight(int k)
+void boardWithgame::moveRight()
 {
+
+//    for(int i = 1; i < 14; i += 4){
+//        for(int j = 3; j > 0; --j){
+//            for(int k = 0; k < j; ++k){
+//               tryMove(i + k - 1, i + k);
+//            }
+//        }
+//    }
+
+    for(int i = 1; i < 14; i += 4){
+        for(int j = 3; j > 0; --j){
+            for(int k = 0; k < j; ++k){
+               tryMove(i + k, i + k - 1);
+            }
+        }
+    }
+    /*
     if(k == 2){
         k = 5;
     } else if(k == 3){
@@ -337,10 +352,18 @@ void boardWithgame::moveRight(int k)
        if(qle_list[k] == nullptr){
             moveWithoutAddition(k + 1, k);}
        else if(qle_list.at(k - 1)->text() == qle_list.at(k)->text()){
-            moveWithAddition(k + 1, k);}}}
+            moveWithAddition(k + 1, k);}}*/}
 
-void boardWithgame::moveDown(int k)
+void boardWithgame::moveDown()
 {
+    for(int i = 0; i < 4; ++i){
+        for(int j = 0; j < 12; j = j + 4){
+            for(int k = 12; k > j; k = k - 4){
+               tryMove(i + k, i + k - 4);
+            }
+        }
+    }
+/*
     if(qle_list[k + 7] != nullptr){
         if(qle_list[k + 11] == nullptr){
             moveWithoutAddition(k + 12, k + 8);}
@@ -375,11 +398,28 @@ void boardWithgame::moveDown(int k)
        if(qle_list[k + 3] == nullptr){
            moveWithoutAddition(k + 4, k);}
        else if(qle_list.at(k + 3)->text() == qle_list.at(k - 1)->text()){
-           moveWithAddition(k + 4, k);}}}
+           moveWithAddition(k + 4, k);}}*/}
 
-void boardWithgame::moveUp(int k)
+void boardWithgame::moveUp()
 {
-    if(qle_list[k + 3] != nullptr){
+
+//    for(int i = 0; i < 4; ++i){
+//        for(int j = 0; j < 12; j = j + 4){
+//            for(int k = 12; k > j; k = k - 4){
+//               tryMove(i + k, i + k - 4);
+//            }
+//        }
+//    }
+
+    for(int i = 0; i < 4; ++i){
+        for(int j = 12; j > 0; j = j - 4){
+            for(int k = 0; k < j; k = k + 4){
+               tryMove(i + k, i + k + 4);
+            }
+        }
+    }
+
+   /* if(qle_list[k + 3] != nullptr){
         if(qle_list[k - 1] == nullptr){
             moveWithoutAddition(k, k + 4);}
         else if (qle_list.at(k - 1)->text() == qle_list.at(k + 3)->text()){
@@ -413,7 +453,7 @@ void boardWithgame::moveUp(int k)
        if(qle_list[k + 7] == nullptr){
             moveWithoutAddition(k + 8, k + 12);}
         else if(qle_list.at(k + 7)->text() == qle_list.at(k + 11)->text()){
-            moveWithAddition(k + 8, k + 12);}}}
+            moveWithAddition(k + 8, k + 12);}}*/}
 
 void boardWithgame::setcolor()
 {
