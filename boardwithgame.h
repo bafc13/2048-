@@ -29,7 +29,7 @@ public:
     explicit boardWithgame(QWidget *parent = 0);
     ~boardWithgame();
     bool isEnd();
-    void plateMoveAnimation(QLineEdit *lineedit);
+    void plateMoveAnimation(QLineEdit *lineedit, QRect from, QRect to);
     void qleadd();
     void setFrame();
     void winCheck();
@@ -58,9 +58,11 @@ private slots:
     void on_checkBox_stateChanged(int arg1);
 
 private:
+    int count = 0;
     Ui::boardWithgame *ui;
     int score = 0;
     QList<QLineEdit*> qle_list;
+    QList <QFrame*> qf_list;
     int stepBack_list[16];
     int reserveStepBack_list[16];
     int rearrangmentCounter = 0; //счётчик, отвечающий за перестановки плашек
@@ -68,6 +70,7 @@ private:
     const QString name = "highscore.txt";  //название файла с максимальным счётом
     std::ofstream fout;    //поток вывода
     QPropertyAnimation *animation;
+    int animateEachPlate = 0;
 
 };
 

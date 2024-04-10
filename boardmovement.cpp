@@ -14,7 +14,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         }
 
 
-        if(e->key() == Qt::Key_A){ //если происходит движение влево
+        if(e->key() == Qt::Key_A || e->key() == Qt::Key_Left){ //если происходит движение влево
             rearrangmentCounter = 0;
             spawnCounter = 0;
 
@@ -39,10 +39,18 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
               //РАНДОМНОГО
               //СПАВНА
 
-            spawnAllPlates();}
+            spawnAllPlates();
 
 
-        if(e->key() == Qt::Key_D) { //если происходит движение вправо
+            setcolor();
+
+
+
+
+        }
+
+
+        if(e->key() == Qt::Key_D || e->key() == Qt::Key_Right) { //если происходит движение вправо
             spawnCounter = 0;
             rearrangmentCounter = 0;
 
@@ -67,10 +75,17 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
             //БЛОК
             //РАНДОМНОГО
             //СПАВНА
-            spawnAllPlates();}
+            spawnAllPlates();
 
 
-        if(e->key() == Qt::Key_S){ //если происходит движение вниз
+
+            setcolor();
+
+
+        }
+
+
+        if(e->key() == Qt::Key_S || e->key() == Qt::Key_Down){ //если происходит движение вниз
             spawnCounter = 0;
             rearrangmentCounter = 0;
 
@@ -95,10 +110,13 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
             //БЛОК
             //РАНДОМНОГО
             //СПАВНА
-            spawnAllPlates();}
+            spawnAllPlates();
+
+            setcolor();
+        }
 
 
-        if(e->key() == Qt::Key_W){ //если происходит движение вверх
+        if(e->key() == Qt::Key_W || e->key() == Qt::Key_Up){ //если происходит движение вверх
             spawnCounter = 0;
             rearrangmentCounter = 0;
 
@@ -123,5 +141,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
               //БЛОК
               //РАНДОМНОГО
               //СПАВНА
-            spawnAllPlates();}
+            spawnAllPlates();
+
+            setcolor();}
 }
