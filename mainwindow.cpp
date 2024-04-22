@@ -17,20 +17,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_startButton_clicked()
 {
-    QMessageBox::StandardButton message = QMessageBox::question(this, "Chose play mode?!", "You want to play default 4x4 mode?", QMessageBox::Yes | QMessageBox::No);
-    if(message == QMessageBox::Yes){
-        board = new boardWithgame(this);
-        board->show();
-    } else {
-        message = QMessageBox::question(this, "Chose play mode?!", "Ok, maybe 5x5??", QMessageBox::Yes | QMessageBox::No);
-        if(message == QMessageBox::Yes){
-            board5 = new board5x5;
-            board5->show();
-        } else {
-            //message = QMessageBox::about(this, "Ok", "Sorry, w8t for updates or chose supported play mode!");
-        }
-    }
-
+    board = new boardWithgame(this);
+    board->show();
 }
 
 void MainWindow::on_scoreButton_clicked()

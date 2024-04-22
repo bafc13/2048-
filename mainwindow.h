@@ -4,7 +4,6 @@
 #include <fstream>
 #include <QMainWindow>
 #include <boardwithgame.h>
-#include <board5x5.h>
 
 
 namespace Ui {
@@ -33,7 +32,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     boardWithgame *board;
-    board5x5 *board5;
     const QString name = "highscore.txt";
     std::ifstream fin;
     std::string line;

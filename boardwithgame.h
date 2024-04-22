@@ -35,7 +35,7 @@ public:
     void winCheck();
     void moveWithoutAddition(int lineGenerator, int j);
     void moveWithAddition(int lineGenerator, int j);
-    void spawnPlate(int lineGenerator);
+    void spawnPlate(int lineGenerator, int value = 0);
     void spawnAllPlates();
     void gameEnd();
     void stepBackAdd();
@@ -47,6 +47,7 @@ public:
     int speedMode_toogle = 0;
     void setcolor();
     void tryMove(int k, int j);
+    void loadScore();
 
 
 private slots:
@@ -63,7 +64,7 @@ private:
     int score = 0;
     QList<QLineEdit*> qle_list;
     QList <QFrame*> qf_list;
-    int stepBack_list[16];
+    int stepBack_list[16] = {0};
     int reserveStepBack_list[16];
     int rearrangmentCounter = 0; //счётчик, отвечающий за перестановки плашек
     int spawnCounter = 0; //счётчик, отвечающий за рандомный спавн плашек

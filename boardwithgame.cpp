@@ -39,8 +39,7 @@ boardWithgame::boardWithgame(QWidget *parent) :
     }
     setFrame();
     qleadd();
-    spawnPlate(10);
-    spawnPlate(4);
+    on_resetButton_clicked();
     ui->gridLayoutWidget->setGeometry(QRect(274,365,440,440));
 }
 
@@ -70,35 +69,56 @@ void boardWithgame::setFrame()
 
 void boardWithgame::on_exitButton_clicked()
 {
+    loadScore();
     close();
 }
 
 void boardWithgame::on_resetButton_clicked()
 {
+    loadScore();
     score = 0;
     ui->liveScore->setText(QString::number(score));
     for(int i = 0; i < 16; i++){
-        if(qle_list.at(i) != nullptr){
-        qle_list[i] = nullptr;
-        qle_list[i]->hide();}
+        if(qle_list[i] != nullptr){
+            qle_list[i]->hide();
+            qle_list[i] = nullptr;}
     }
     int first, second;
     first = randPlateIndexGenerator(generator);
     second = randPlateIndexGenerator(generator);
-    qle_list[first] = new QLineEdit;
-    qle_list.at(first)->setText("2");
-    qle_list[second] = new QLineEdit;
-    qle_list.at(second)->setText("2");}
-
+    while(first == second){second = randPlateIndexGenerator(generator);}
+    spawnPlate(first);
+    spawnPlate(second);
+}
 void boardWithgame::on_stepBackButton_clicked()
-{}
-//    for(int i = 0; i < 16; i++){
-//        qle_list.at(i)->setText(QString::number(stepBack_list[i]));
-//        if(stepBack_list[i] == 0){
-//            qle_list.at(i)->setText("");
-//        }
-//    }
-
+{
+    if(rearrangmentCounter != 0){
+        for(int i = 0; i < 16; i++){
+            if(stepBack_list[i] != 0){
+                if(qle_list[i] != nullptr){
+                    qle_list[i]->hide();
+                    qle_list[i] = nullptr;
+                }
+                spawnPlate(i, stepBack_list[i]);}
+            else {
+                if(qle_list[i] != nullptr){
+                    qle_list.at(i)->hide();
+                    qle_list[i] = nullptr;}
+        }}} else {
+        for(int i = 0; i < 16; i++){
+            if(reserveStepBack_list[i] != 0){
+                if(qle_list[i] != nullptr){
+                    qle_list[i]->hide();
+                    qle_list[i] = nullptr;
+                }
+                spawnPlate(i, reserveStepBack_list[i]);}
+            else {
+                if(qle_list[i] != nullptr){
+                    qle_list.at(i)->hide();
+                    qle_list[i] = nullptr;}
+        }}
+    }
+}
 
 bool boardWithgame::isEnd()
 {
@@ -118,9 +138,7 @@ void boardWithgame::gameEnd()
         QMessageBox *mes = new QMessageBox;
         mes->setText("You lost! Restart da game! Or try the other side ;)");
         mes->exec();
-        fout.open(name.toStdString(),std::ios_base::app);
-        fout << score << "\n";
-        fout.close();
+        loadScore();
     }}
 
 void boardWithgame::stepBackAdd()
@@ -129,7 +147,9 @@ void boardWithgame::stepBackAdd()
         reserveStepBack_list[i] = stepBack_list[i];
     }
     for(int i = 0; i < 16; i++){
-        stepBack_list[i] = qle_list.at(i)->text().toInt();
+        if(qle_list[i] != nullptr){
+            stepBack_list[i] = qle_list.at(i)->text().toInt();
+        } else { stepBack_list[i] = 0; }
     }}
 
 void boardWithgame::stepBackBack()
@@ -150,7 +170,8 @@ void boardWithgame::winCheck()
             QMessageBox *mes = new QMessageBox;
             mes->setText("You won! Congratilations! You can continue, u play endless mode");
             mes->exec();winCounter++;
-        }}}}
+            loadScore();
+}}}}
 
 void boardWithgame::spawnAllPlates()
 {
@@ -162,10 +183,13 @@ void boardWithgame::spawnAllPlates()
                 spawnPlate(k);
 }}}}
 
-void boardWithgame::spawnPlate(int k)
+void boardWithgame::spawnPlate(int k, int value)
 {
-    int text = 2;
-    if(randPlateIndexGenerator(generator) < 8){ text = 2; } else { text = 4; }
+    int text;
+    if(value == 0){
+        text = 2;
+        if(randPlateIndexGenerator(generator) < 8){ text = 2; } else { text = 4; }
+    } else { text = value; }
     qle_list[k] = new QLineEdit;
     qle_list.at(k)->setText(QString::number(text));
     qle_list.at(k)->setReadOnly(true);
@@ -180,6 +204,13 @@ void boardWithgame::spawnPlate(int k)
     else if(row == 1){ tempgeom.setY(131); }
     else if(row == 2){ tempgeom.setY(251); }
     else if(row == 3){ tempgeom.setY(362); }
+
+    if(column == 0){ tempgeom.setX(0); }
+    else if(column == 1){ tempgeom.setX(111); }
+    else if(column == 2){ tempgeom.setX(222); }
+    else if(column == 3){ tempgeom.setX(333); }
+
+    tempgeom.setWidth(108); tempgeom.setHeight(51);
     qle_list.at(k)->setGeometry(tempgeom);
 
     spawnCounter++;}
@@ -189,7 +220,6 @@ void boardWithgame::plateMoveAnimation(QLineEdit *lineedit, QRect from, QRect to
     count++;
     if(speedMode_toogle == 0){
         animation = new QPropertyAnimation(lineedit, "geometry");
-//        animation->setEasingCurve(QEasingCurve::Type::InOutQuad);
         animation->setDuration(200);
         animation->setStartValue(from);
         animation->setEndValue(to);
@@ -217,6 +247,12 @@ void boardWithgame::moveWithAddition(int k, int j)
     else if(row == 1){ to.setY(131); }
     else if(row == 2){ to.setY(251); }
     else if(row == 3){ to.setY(362); }
+
+    if(column == 0){ to.setX(0); }
+    else if(column == 1){ to.setX(111); }
+    else if(column == 2){ to.setX(222); }
+    else if(column == 3){ to.setX(333); }
+
 
     to.setWidth(108); to.setHeight(51);
 
@@ -255,6 +291,12 @@ void boardWithgame::moveWithoutAddition(int k, int j)
     else if(roow == 3){ to.setY(362); }
     to.setWidth(108); to.setHeight(51);
 
+
+    if(column == 0){ to.setX(0); }
+    else if(column == 1){ to.setX(111); }
+    else if(column == 2){ to.setX(222); }
+    else if(column == 3){ to.setX(333); }
+
     qle_list[j]->hide();
     qle_list.at(j)->setText("");
 
@@ -279,6 +321,13 @@ void boardWithgame::tryMove(int k, int j)
     }
 }
 
+void boardWithgame::loadScore()
+{
+    fout.open(name.toStdString(),std::ios_base::app);
+    fout << score << "\n";
+    fout.close();
+}
+
 void boardWithgame::moveLeft()
 {
     for(int i = 1; i < 14; i += 4){
@@ -290,8 +339,8 @@ void boardWithgame::moveLeft()
 void boardWithgame::moveRight()
 {
     for(int i = 1; i < 14; i += 4){
-        for(int j = 3; j > 0; --j){
-            for(int k = 0; k < j; ++k){
+        for(int j = -1; j < 3; ++j){
+            for(int k = 2; k > j; --k){
                tryMove(i + k, i + k - 1);
             }}}}
 
@@ -313,19 +362,25 @@ void boardWithgame::moveUp()
 
 void boardWithgame::setcolor()
 {
-    QPalette palette;
     for(int i = 0; i < 16; ++i){
         if(qle_list[i] != nullptr){
         if(qle_list.at(i)->text() == "2"){
+            QPalette palette = qle_list.at(i)->palette();
             palette.setColor(QPalette::Background, QColor(50,93,168));
+            palette.setColor(QPalette::Text, Qt::black);
             qle_list.at(i)->setPalette(palette);
+            qle_list.at(i)->repaint();
         }
         if(qle_list.at(i)->text() == "4"){
+            QPalette palette = qle_list.at(i)->palette();
             palette.setColor(QPalette::Background, QColor(100,230,200));
+            palette.setColor(QPalette::Text, Qt::black);
             qle_list.at(i)->setPalette(palette);
         }
         if(qle_list.at(i)->text() == "8"){
+            QPalette palette = qle_list.at(i)->palette();
             palette.setColor(QPalette::Background, QColor(139,50,168));
+            palette.setColor(QPalette::Text, Qt::black);
             qle_list.at(i)->setPalette(palette);
         }}}
 }

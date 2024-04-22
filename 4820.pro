@@ -27,19 +27,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     boardwithgame.cpp \
-    boardmovement.cpp \
-    board5x5.cpp \
-    board5x5movement.cpp
+    boardmovement.cpp
 
 HEADERS += \
         mainwindow.h \
-    boardwithgame.h \
-    board5x5.h
+    boardwithgame.h
 
 FORMS += \
         mainwindow.ui \
-    boardwithgame.ui \
-    board5x5.ui
+    boardwithgame.ui
 
 RESOURCES += \
     resurces.qrc

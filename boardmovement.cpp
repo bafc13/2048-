@@ -18,6 +18,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
             rearrangmentCounter = 0;
             spawnCounter = 0;
 
+            stepBackAdd();
             //БЛОК
             //СМЕЩЕНИЯ
             //ВЛЕВО
@@ -31,9 +32,10 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
 
             //Блок...
 
-//            if(rearrangmentCounter == 0){
-//                stepBackBack();
-//            }
+
+            if(rearrangmentCounter == 0){
+                stepBackBack();
+            }
 
               //БЛОК
               //РАНДОМНОГО
@@ -53,7 +55,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         if(e->key() == Qt::Key_D || e->key() == Qt::Key_Right) { //если происходит движение вправо
             spawnCounter = 0;
             rearrangmentCounter = 0;
-
+            stepBackAdd();
             //БЛОК
             //СМЕЩЕНИЯ
             //ВПРАВО
@@ -68,9 +70,10 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
 
             //Блок...
 
-//            if(rearrangmentCounter == 0){
-//                stepBackBack();
-//            }
+
+            if(rearrangmentCounter == 0){
+                stepBackBack();
+            }
 
             //БЛОК
             //РАНДОМНОГО
@@ -88,6 +91,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         if(e->key() == Qt::Key_S || e->key() == Qt::Key_Down){ //если происходит движение вниз
             spawnCounter = 0;
             rearrangmentCounter = 0;
+            stepBackAdd();
 
             //БЛОК
             //СМЕЩЕНИЯ
@@ -102,10 +106,9 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
             gameEnd();
 
             //Блок...
-
-//            if(rearrangmentCounter == 0){
-//                stepBackBack();
-//            }
+            if(rearrangmentCounter == 0){
+                stepBackBack();
+            }
 
             //БЛОК
             //РАНДОМНОГО
@@ -119,6 +122,7 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         if(e->key() == Qt::Key_W || e->key() == Qt::Key_Up){ //если происходит движение вверх
             spawnCounter = 0;
             rearrangmentCounter = 0;
+            stepBackAdd();
 
             //БЛОК
             //СМЕЩЕНИЯ
@@ -134,9 +138,9 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
 
             //Блок...
 
-//            if(rearrangmentCounter == 0){
-//                stepBackBack();
-//            }
+            if(rearrangmentCounter == 0){
+                stepBackBack();
+            }
 
               //БЛОК
               //РАНДОМНОГО
