@@ -8,9 +8,6 @@
 #include <QDebug>
 #include <QPropertyAnimation>
 
-//сделать разным плашкам разные цвета, по типу двойка син€€, четвЄрка красна€ и тд
-
-
 
 
 namespace Ui {
@@ -21,10 +18,8 @@ class boardWithgame : public QDialog
 {
     Q_OBJECT
 
-
 protected:
     void keyPressEvent(QKeyEvent *e) override; //управление игрой с клавиатуры
-
 public:
     explicit boardWithgame(QWidget *parent = 0);
     ~boardWithgame();
@@ -48,16 +43,12 @@ public:
     void setcolor();
     void tryMove(int k, int j);
     void loadScore();
-
-
+    void setFramePos();
 private slots:
     void on_exitButton_clicked();
     void on_resetButton_clicked();
     void on_stepBackButton_clicked();
-
-
     void on_checkBox_stateChanged(int arg1);
-
 private:
     int count = 0;
     Ui::boardWithgame *ui;
@@ -72,7 +63,6 @@ private:
     std::ofstream fout;    //поток вывода
     QPropertyAnimation *animation;
     int animateEachPlate = 0;
-
 };
 
 #endif // BOARDWITHGAME_H

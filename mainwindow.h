@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <fstream>
 #include <QMainWindow>
 #include <boardwithgame.h>
+
 
 
 namespace Ui {
@@ -17,18 +17,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
 signals:
     void signalOffSpeedMode(int arg1);
-
 private slots:
     void on_startButton_clicked();
-
     void on_scoreButton_clicked();
-
     void on_exitButton_clicked();
-
-
 private:
     Ui::MainWindow *ui;
     boardWithgame *board;
