@@ -17,8 +17,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-signals:
-    void signalOffSpeedMode(int arg1);
+
 private slots:
     void on_startButton_clicked();
     void on_scoreButton_clicked();
@@ -30,7 +29,6 @@ private:
     std::ifstream fin;
     std::string line;
     int maxScore = 0;
-    int speedMode_toogle = 0;
 };
 
 #endif // MAINWINDOW_H

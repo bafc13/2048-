@@ -8,8 +8,6 @@
 #include <QDebug>
 #include <QPropertyAnimation>
 
-
-
 namespace Ui {
 class boardWithgame;
 }
@@ -43,7 +41,7 @@ public:
     void setcolor();
     void tryMove(int k, int j);
     void loadScore();
-    void setFramePos();
+    void setPlatePos();
 private slots:
     void on_exitButton_clicked();
     void on_resetButton_clicked();

@@ -26,7 +26,6 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         }
         spawnAllPlates();
         setcolor();
-        setFramePos();
     }
 
 
@@ -42,7 +41,6 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         }
         spawnAllPlates();
         setcolor();
-        setFramePos();
     }
 
     if(e->key() == Qt::Key_S || e->key() == Qt::Key_Down)
@@ -57,7 +55,6 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         }
         spawnAllPlates();
         setcolor();
-        setFramePos();
     }
 
     if(e->key() == Qt::Key_W || e->key() == Qt::Key_Up)
@@ -72,6 +69,5 @@ void boardWithgame::keyPressEvent(QKeyEvent *e) //рандом в столбце, передаём ном
         }
         spawnAllPlates();
         setcolor();
-        setFramePos();
     }
 }

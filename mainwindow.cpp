@@ -7,7 +7,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    QMovie *movie = new QMovie(":/new/prefix1/img/4Cb2.gif");
+    QLabel *processLabel = new QLabel(this);
+    processLabel->setMovie(movie);
+    processLabel->setGeometry(0,0,1000,1000);
+    movie->start();
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()

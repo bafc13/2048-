@@ -65,7 +65,7 @@ void boardWithgame::setFrame()
             frame->setGeometry((270 +(100*i)), (370 + (100*j)), 100,100);
             qf_list.push_back(frame);
             ui->gridLayout->addWidget(frame, i, j, 1, 1);
-    }}}
+}}}
 
 void boardWithgame::on_exitButton_clicked()
 {
@@ -93,33 +93,33 @@ void boardWithgame::on_resetButton_clicked()
 }
 void boardWithgame::on_stepBackButton_clicked()
 {
-if(rearrangmentCounter != 0){
-    for(int i = 0; i < 16; i++){
-        if(stepBack_list[i] != 0){
-            if(qle_list[i] != nullptr){
-                qle_list[i]->hide();
-                qle_list[i] = nullptr;
-            }
-            spawnPlate(i, stepBack_list[i]);}
-        else {
-            if(qle_list[i] != nullptr){
-                qle_list.at(i)->hide();
-                qle_list[i] = nullptr;}
-    }}} else {
-    for(int i = 0; i < 16; i++){
-        if(reserveStepBack_list[i] != 0){
-            if(qle_list[i] != nullptr){
-                qle_list[i]->hide();
-                qle_list[i] = nullptr;
-            }
-            spawnPlate(i, reserveStepBack_list[i]);}
-        else {
-            if(qle_list[i] != nullptr){
-                qle_list.at(i)->hide();
-                qle_list[i] = nullptr;}
-    }}
-}
-setcolor();
+    if(rearrangmentCounter != 0){
+        for(int i = 0; i < 16; i++){
+            if(stepBack_list[i] != 0){
+                if(qle_list[i] != nullptr){
+                    qle_list[i]->hide();
+                    qle_list[i] = nullptr;
+                }
+                spawnPlate(i, stepBack_list[i]);}
+            else {
+                if(qle_list[i] != nullptr){
+                    qle_list.at(i)->hide();
+                    qle_list[i] = nullptr;}
+        }}} else {
+        for(int i = 0; i < 16; i++){
+            if(reserveStepBack_list[i] != 0){
+                if(qle_list[i] != nullptr){
+                    qle_list[i]->hide();
+                    qle_list[i] = nullptr;
+                }
+                spawnPlate(i, reserveStepBack_list[i]);}
+            else {
+                if(qle_list[i] != nullptr){
+                    qle_list.at(i)->hide();
+                    qle_list[i] = nullptr;}
+        }}
+    }
+    setcolor();
 }
 
 bool boardWithgame::isEnd()
@@ -129,7 +129,9 @@ bool boardWithgame::isEnd()
         if(qle_list[i] != nullptr){
             k++;}}
     if(k == 16){ return 1; }
-    else { return 0; }}
+    else { return 0;
+}}
+
 
 void boardWithgame::gameEnd()
 {
@@ -141,7 +143,7 @@ void boardWithgame::gameEnd()
         mes->setText("You lost! Restart da game! Or try the other side ;)");
         mes->exec();
         loadScore();
-    }}
+}}
 
 void boardWithgame::stepBackAdd()
 {
@@ -152,13 +154,13 @@ void boardWithgame::stepBackAdd()
         if(qle_list[i] != nullptr){
             stepBack_list[i] = qle_list.at(i)->text().toInt();
         } else { stepBack_list[i] = 0; }
-    }}
+}}
 
 void boardWithgame::stepBackBack()
 {
     for(int i = 0; i < 16; i++){
         stepBack_list[i] = reserveStepBack_list[i];
-    }}
+}}
 
 void boardWithgame::winCheck()
 {
@@ -211,11 +213,12 @@ void boardWithgame::spawnPlate(int k, int value)
     else if(column == 1){ tempgeom.setX(111); }
     else if(column == 2){ tempgeom.setX(222); }
     else if(column == 3){ tempgeom.setX(333); }
-
     tempgeom.setWidth(108); tempgeom.setHeight(51);
-    qle_list.at(k)->setGeometry(tempgeom);
 
-    spawnCounter++;}
+    qle_list.at(k)->setGeometry(tempgeom);
+    spawnCounter++;
+}
+
 
 void boardWithgame::plateMoveAnimation(QLineEdit *lineedit, QRect from, QRect to)
 {
@@ -226,8 +229,10 @@ void boardWithgame::plateMoveAnimation(QLineEdit *lineedit, QRect from, QRect to
         animation->setStartValue(from);
         animation->setEndValue(to);
         animation->start(QAbstractAnimation::KeepWhenStopped);
-    }
-}
+        QObject::connect(animation, &QPropertyAnimation::finished, [=]() {
+//            setPlatePos();
+        });
+}}
 
 void boardWithgame::moveWithAddition(int k, int j)
 {
@@ -272,7 +277,8 @@ void boardWithgame::moveWithoutAddition(int k, int j)
     QString temp = qle_list.at(j)->text();
     qle_list.at(k)->setReadOnly(true);
     qle_list.at(k)->setAlignment(Qt::AlignCenter);
-    qle_list.at(k)->setStyleSheet("background-color: rgba(0,100,100,170);border-radius: 20px; font-size: 41px;");
+    qle_list.at(k)->setStyleSheet("background-color: rgba(0,100,100,170);border-radius: "
+                                  "20px; font-size: 41px;");
     qle_list.at(k)->setText(temp);
     int roow, column = 0; //column - столбец, row - ряд
     roow = k / 4;
@@ -320,13 +326,28 @@ void boardWithgame::loadScore()
     fout.close();
 }
 
-void boardWithgame::setFramePos()
-{/*
-    for(int i = 0; i < 4; ++i){
-        for(int j = 0; j < 4; ++j){
-            qf_list.at(i)->setGeometry((270 +(100*i)), (370 + (100*j)), 100,100);
-            qf_list.at(i)->setStyleSheet("background-color: rgba(100,50,60,200); border: 4mm ridge rgba(211, 220, 50, .6);");
-    }}*/
+void boardWithgame::setPlatePos()
+{
+    for(int i = 0; i < 16; ++i)
+    {
+        if(qle_list[i] != nullptr){
+        QRect tempgeom = qle_list.at(i)->geometry();
+        int row = i / 4; int column = i % 4;
+        switch(row){
+        case 0: tempgeom.setY(28); break;
+        case 1: tempgeom.setY(131); break;
+        case 2: tempgeom.setY(251); break;
+        case 3: tempgeom.setY(362); break;
+        }
+        switch(column){
+        case 0: tempgeom.setX(0); break;
+        case 1: tempgeom.setX(111); break;
+        case 2: tempgeom.setX(222); break;
+        case 3: tempgeom.setX(333); break;
+        }
+        tempgeom.setWidth(108); tempgeom.setHeight(51);
+        qle_list.at(i)->setGeometry(tempgeom);
+    }}
 }
 
 void boardWithgame::moveLeft()
@@ -335,7 +356,7 @@ void boardWithgame::moveLeft()
         for(int j = 3; j > 0; --j){
             for(int k = 0; k < j; ++k){
                tryMove(i + k - 1, i + k);
-            }}}}
+}}}}
 
 void boardWithgame::moveRight()
 {
@@ -343,7 +364,7 @@ void boardWithgame::moveRight()
         for(int j = -1; j < 3; ++j){
             for(int k = 2; k > j; --k){
                tryMove(i + k, i + k - 1);
-            }}}}
+}}}}
 
 void boardWithgame::moveDown()
 {
@@ -351,7 +372,7 @@ void boardWithgame::moveDown()
         for(int j = 0; j < 12; j = j + 4){
             for(int k = 12; k > j; k = k - 4){
                tryMove(i + k, i + k - 4);
-            }}}}
+}}}}
 
 void boardWithgame::moveUp()
 {
@@ -359,41 +380,69 @@ void boardWithgame::moveUp()
         for(int j = 12; j > 0; j = j - 4){
             for(int k = 0; k < j; k = k + 4){
                tryMove(i + k, i + k + 4);
-            }}}}
+}}}}
 
 void boardWithgame::setcolor()
 {
     for(int i = 0; i < 16; ++i){
         if(qle_list[i] != nullptr){
-        switch(qle_list.at(i)->text().toInt()){
-        case 2:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(50,93,168);border-radius: 20px; font-size: 41px;"); break;
-        case 4:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(100,230,200);border-radius: 20px; font-size: 41px;"); break;
-        case 8:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(139,50,168);border-radius: 20px; font-size: 41px;"); break;
-        case 16:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(179,60,178);border-radius: 20px; font-size: 41px;"); break;
-        case 32:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(199,70,198);border-radius: 20px; font-size: 41px;"); break;
-        case 64:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(220,85,170);border-radius: 20px; font-size: 41px;"); break;
-        case 128:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(75,140,198);border-radius: 20px; font-size: 41px;"); break;
-        case 256:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(139,129,250);border-radius: 20px; font-size: 41px;"); break;
-        case 512:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(230,110,200);border-radius: 20px; font-size: 41px;"); break;
-        case 1024:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(230,40,222);border-radius: 20px; font-size: 41px;"); break;
-        case 2048:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(130,10,250);border-radius: 20px; font-size: 41px;"); break;
-        case 4096:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(240,160,20);border-radius: 20px; font-size: 41px;"); break;
-        case 8192:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(130,100,58);border-radius: 20px; font-size: 41px;"); break;
-        case 16384:
-            qle_list.at(i)->setStyleSheet("background-color: rgb(170,50,201);border-radius: 20px; font-size: 41px;"); break;
+            switch(qle_list.at(i)->text().toInt()){
+            case 2:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(50,93,168);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 4:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(100,230,200);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 8:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(139,50,168);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 16:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(179,60,178);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 32:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(199,70,198);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 64:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(220,85,170);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 128:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(75,140,198);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 256:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(139,129,250);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 512:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(230,110,200);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 1024:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(230,40,222);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 2048:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(130,10,250);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 4096:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(240,160,20);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 8192:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(130,100,58);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
+            case 16384:
+                qle_list.at(i)->setStyleSheet("background-color: "
+                                              "rgb(170,50,201);border-radius: 20px; "
+                                              "font-size: 41px;"); break;
         }}
 }}
 
@@ -404,4 +453,4 @@ void boardWithgame::on_checkBox_stateChanged(int arg1)
         speedMode_toogle = 0;
     } else{
         speedMode_toogle = 1;
-    }}
+}}
